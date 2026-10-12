@@ -3,15 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>NutriFit — Planos de Treino e Alimentação</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div>TESTE</div>
+    <div>TESTE index 11/10/2026</div>
 
-    <div>ola</div>
+    <header>
+    <div class="logo">Nutri<span>Fit</span></div>
 
-    <div>outro commit so para testar tb</div>
-    <div>outro commit so para testar tb do dia 10 nov2026</div>
-    
+    <div class="nav-actions" id="nav-actions">
+      <a href="#" class="link-entrar" onclick="abrirModal(); return false;">Entrar</a>
+      <button class="btn btn-primary" onclick="abrirModal()">Criar conta</button>
+    </div>
+
+    <button class="menu-toggle" onclick="alternarMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- ===== HERO (duas colunas: texto + imagem) ===== -->
+  <section class="hero" id="inicio">
+    <div class="hero-texto">
+      <h1>Os teus treinos e a tua alimentação, <span>num só plano</span></h1>
+      <p>Cria planos de treino e de dieta à tua medida e guarda-os na tua conta.</p>
+      <div class="hero-buttons">
+        <button class="btn btn-primary" onclick="abrirModal()">Começar agora</button>
+        <button class="btn btn-outline" onclick="abrirModal()">Já tenho conta</button>
+      </div>
+    </div>
+
+    <div class="hero-imagem">
+      
+    </div>
+  </section>
+
+  <!-- ===== COMO FUNCIONA ===== -->
+  <section class="como-funciona">
+    <h2>Como funciona</h2>
+
+    <div class="passos">
+      <div class="passo">
+        <h3>1. Cria a tua conta</h3>
+        <p>Regista-te e completa o teu perfil.</p>
+      </div>
+      <div class="passo">
+        <h3>2. Monta o teu treino</h3>
+        <p>Escolhe exercícios para cada dia da semana.</p>
+      </div>
+      <div class="passo">
+        <h3>3. Define a tua dieta</h3>
+        <p>Escolhe alimentos para cada refeição.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>&copy; 2026 NutriFit</p>
+  </footer>
+
+  <!-- ===== MODAL DE LOGIN / REGISTO ===== -->
+  <div class="overlay" id="overlay-login">
+    <div class="modal">
+      <button class="fechar-modal" onclick="fecharModal()">&times;</button>
+      <h2>Entrar na tua conta</h2>
+      <form onsubmit="return false;">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="o-teu-email@exemplo.com" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="••••••••" required>
+
+        <button type="submit" class="btn btn-primary">Entrar</button>
+      </form>
+      <p class="modal-troca">Ainda não tens conta? <a href="#">Regista-te</a></p>
+    </div>
+  </div>
+
+  <script>
+    function abrirModal() {
+      document.getElementById('overlay-login').classList.add('ativo');
+    }
+    function fecharModal() {
+      document.getElementById('overlay-login').classList.remove('ativo');
+    }
+    document.getElementById('overlay-login').addEventListener('click', function(e) {
+      if (e.target === this) fecharModal();
+    });
+
+    function alternarMenu() {
+      document.getElementById('nav-actions').classList.toggle('ativo');
+    }
+  </script>
+
 </body>
 </html>
