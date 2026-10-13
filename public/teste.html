@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Teste de ligação</title>
+</head>
+<body style="font-family: sans-serif; padding: 24px; line-height: 1.5;">
+  <h1>Teste de ligação</h1>
+  <p id="servidor">A contactar o servidor...</p>
+  <p id="sessao"></p>
+  <p id="bd"></p>
+  <p>Recarrega a página (F5): o número de visitas deve subir.</p>
+
+  <script>
+    fetch('/api/teste')
+      .then(resposta => resposta.json())
+      .then(dados => {
+        document.getElementById('servidor').textContent = '✔ ' + dados.mensagem + ' (' + dados.hora + ')';
+        document.getElementById('sessao').textContent = '✔ Sessão a funcionar. Visitas nesta sessão: ' + dados.visitas;
+        document.getElementById('bd').textContent = '✔ Base de dados ligada: ' + dados.exercicios + ' exercícios e ' + dados.alimentos + ' alimentos';
+      })
+      .catch(() => {
+        document.getElementById('servidor').textContent = '✘ Não consegui falar com o servidor. Abriste a página por http://localhost:3000/teste.html?';
+      });
+  </script>
+</body>
+</html>
