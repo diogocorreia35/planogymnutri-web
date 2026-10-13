@@ -11,7 +11,7 @@ app.use(express.json());
 
 // Sessões: é isto que vai manter o utilizador com login feito
 app.use(session({
-  secret: 'muda-isto-mais-tarde', // chave das sessões (serve só para desenvolvimento)
+  secret: 'cfa849c4bdf91a040d43025a5fd16477ff34d2c864c61bd2000ed2c2f4d8bb91', // chave das sessões (serve só para desenvolvimento)
   resave: false,
   saveUninitialized: false
 }));
