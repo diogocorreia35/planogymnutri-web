@@ -4,15 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NutriFit — Planos de Treino e Alimentação</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
     <header>
-    <div class="logo">Nutri<span>Fit</span></div>
+    <div class="logo">
+      <a href="#inicio" aria-label="NutriFit - Página inicial">
+        <img src="imagens/logo-nutrifit-Oficial.svg" alt="NutriFit" class="logo-img">
+      </a>
+    </div>  
 
     <div class="nav-actions" id="nav-actions">
       <a href="#" class="link-entrar" onclick="abrirModal(); return false;">Entrar</a>
-      <button class="btn btn-primary" onclick="abrirModal()">Criar conta</button>
+      <a href="registo.html" class="btn btn-primary">Criar conta</a>
     </div>
 
     <button class="menu-toggle" onclick="alternarMenu()">
@@ -26,7 +30,7 @@
       <h1>Os teus treinos e a tua alimentação, <span>num só plano</span></h1>
       <p>Cria planos de treino e de dieta à tua medida e guarda-os na tua conta.</p>
       <div class="hero-buttons">
-        <button class="btn btn-primary" onclick="abrirModal()">Começar agora</button>
+        <a href="registo.html" class="btn btn-primary">Começar agora</a>
         <button class="btn btn-outline" onclick="abrirModal()">Já tenho conta</button>
       </div>
     </div>
@@ -75,7 +79,7 @@
 
         <button type="submit" class="btn btn-primary">Entrar</button>
       </form>
-      <p class="modal-troca">Ainda não tens conta? <a href="#">Regista-te</a></p>
+      <p class="modal-troca">Ainda não tens conta? <a href="registo.html">Regista-te</a></p>
     </div>
   </div>
 

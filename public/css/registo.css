@@ -1,0 +1,104 @@
+/* ---------- CABEÇALHO DO REGISTO ---------- */
+.texto-ja-tens-conta {
+  font-size: 0.9rem;
+  color: var(--verde-medio);
+}
+
+/* ---------- LAYOUT DA PÁGINA ---------- */
+.registo-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 20px 60px;
+}
+
+.registo-card {
+  background: var(--branco);
+  border: 1px solid #E4E1D8;
+  border-radius: 14px;
+  padding: 44px 40px;
+  width: 100%;
+  max-width: 440px;
+}
+
+.registo-card h1 {
+  font-size: 1.8rem;
+  color: var(--verde-escuro);
+  margin-bottom: 8px;
+}
+
+.registo-subtitulo {
+  font-size: 0.92rem;
+  color: var(--verde-medio);
+  margin-bottom: 28px;
+}
+
+/* ---------- FORMULÁRIO ---------- */
+#form-registo label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--texto);
+  margin-bottom: 6px;
+  margin-top: 16px;
+}
+
+#form-registo label:first-of-type { margin-top: 0; }
+
+#form-registo input,
+#form-registo select {
+  width: 100%;
+  padding: 11px 12px;
+  border-radius: 6px;
+  border: 1px solid #CFCBC0;
+  font-size: 0.95rem;
+  font-family: inherit;
+  background: var(--branco);
+  color: var(--texto);
+}
+
+#form-registo input:focus,
+#form-registo select:focus {
+  outline: none;
+  border-color: var(--verde-medio);
+}
+
+.erro-password {
+  display: none;
+  color: #C0392B;
+  font-size: 0.85rem;
+  margin-top: 10px;
+}
+
+.erro-password.visivel { display: block; }
+
+.btn-submit {
+  width: 100%;
+  margin-top: 26px;
+  padding: 13px;
+  font-size: 1rem;
+}
+
+.registo-troca {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.88rem;
+  color: var(--verde-medio);
+}
+
+.registo-troca a {
+  color: var(--laranja);
+  font-weight: 600;
+}
+
+/* ---------- RESPONSIVO ---------- */
+@media (max-width: 480px) {
+  .registo-card {
+    padding: 32px 24px;
+  }
+
+  .registo-wrapper {
+    padding: 100px 16px 40px;
+  }
+}

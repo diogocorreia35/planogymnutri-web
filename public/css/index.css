@@ -27,7 +27,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 40px;
+  padding: 8px 40px;
   background: var(--branco);
   border-bottom: 1px solid #E4E1D8;
   z-index: 100;
@@ -37,6 +37,13 @@ header {
   font-size: 1.3rem;
   font-weight: 700;
   color: var(--verde-escuro);
+}
+
+.logo-img {
+  display: block;
+  width: auto;
+  height: 80px;
+  object-fit: contain;
 }
 
 .logo span { color: var(--laranja); }
@@ -136,8 +143,7 @@ header {
   aspect-ratio: 4 / 3;
   border-radius: 14px;
   background-color: #E4E1D8;
-  /* Substitui pela tua foto (ex: pessoa a treinar / comida saudável) */
-  background-image: url(imagens/98085038-nutrição-esportiva-suplementos-alimentos-saudáveis-e-halteres-em-um-fundo-preto-fitness.jpg);
+  background-image: url(../imagens/98085038-nutrição-esportiva-suplementos-alimentos-saudáveis-e-halteres-em-um-fundo-preto-fitness.jpg);
   background-size: cover;
   background-position: center;
 }

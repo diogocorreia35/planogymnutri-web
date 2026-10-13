@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Página de Registo — NutriFit</title>
+<link rel="stylesheet" href="css/index.css">
+<link rel="stylesheet" href="css/registo.css">
+</head>
+<body>
+
+  <!-- ===== NAVBAR (igual ao resto do site) ===== -->
+  <header>
+    <div class="logo">
+      <a href="#inicio" aria-label="NutriFit - Página inicial">
+        <img src="imagens/logo-nutrifit-Oficial.svg" alt="NutriFit" class="logo-img">
+      </a>
+    </div>  
+
+    <div class="nav-actions">
+      <span class="texto-ja-tens-conta">Já tens conta?</span>
+      <a href="index.html" class="btn btn-outline">Entrar</a>
+    </div>
+  </header>
+
+  <!-- ===== REGISTO ===== -->
+  <main class="registo-wrapper">
+    <div class="registo-card">
+      <h1>Cria a tua conta</h1>
+      <p class="registo-subtitulo">Só precisamos de algumas informações para começares a montar os teus planos.</p>
+
+      <form id="form-registo" novalidate>
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" name="nome" placeholder="O teu nome" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="o-teu-email@exemplo.com" required>
+
+        <label for="password">Palavra-passe</label>
+        <input type="password" id="password" name="password" placeholder="Mínimo 6 caracteres" minlength="6" required>
+
+        <label for="confirmar-password">Confirmar palavra-passe</label>
+        <input type="password" id="confirmar-password" name="confirmar-password" placeholder="Repete a palavra-passe" minlength="6" required>
+
+        <p class="erro-password" id="erro-password">As palavras-passe não coincidem.</p>
+
+        <button type="submit" class="btn btn-primary btn-submit">Criar conta</button>
+      </form>
+
+      <p class="registo-troca">Já tens conta? <a href="index.html">Entra aqui</a></p>
+    </div>
+  </main>
+
+  <!-- ===== FOOTER (igual ao resto do site) ===== -->
+  <footer>
+    <p>&copy; 2026 NutriFit</p>
+  </footer>
+
+  <script>
+    const form = document.getElementById('form-registo');
+    const password = document.getElementById('password');
+    const confirmarPassword = document.getElementById('confirmar-password');
+    const erroPassword = document.getElementById('erro-password');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      if (password.value !== confirmarPassword.value) {
+        erroPassword.classList.add('visivel');
+        confirmarPassword.focus();
+        return;
+      }
+
+      erroPassword.classList.remove('visivel');
+      // Aqui, mais tarde, entra o pedido ao servidor (PHP) para guardar o utilizador na base de dados
+      alert('Conta criada com sucesso! (ainda sem ligação à base de dados)');
+      form.reset();
+    });
+  </script>
+
+</body>
+</html>
