@@ -1,104 +1,201 @@
+
 /* ---------- CABEÇALHO DO REGISTO ---------- */
+
 .texto-ja-tens-conta {
-  font-size: 0.9rem;
-  color: var(--verde-medio);
+    font-size: 0.9rem;
+    color: var(--verde-medio);
 }
 
+
 /* ---------- LAYOUT DA PÁGINA ---------- */
+
 .registo-wrapper {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 120px 20px 60px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 20px 60px;
 }
 
 .registo-card {
-  background: var(--branco);
-  border: 1px solid #E4E1D8;
-  border-radius: 14px;
-  padding: 44px 40px;
-  width: 100%;
-  max-width: 440px;
+    background: var(--branco);
+    border: 1px solid #E4E1D8;
+    border-radius: 14px;
+    padding: 44px 40px;
+    width: 100%;
+    max-width: 440px;
 }
 
 .registo-card h1 {
-  font-size: 1.8rem;
-  color: var(--verde-escuro);
-  margin-bottom: 8px;
+    font-size: 1.8rem;
+    color: var(--verde-escuro);
+    margin-bottom: 8px;
 }
 
 .registo-subtitulo {
-  font-size: 0.92rem;
-  color: var(--verde-medio);
-  margin-bottom: 28px;
+    font-size: 0.92rem;
+    color: var(--verde-medio);
+    margin-bottom: 28px;
 }
+
 
 /* ---------- FORMULÁRIO ---------- */
+
 #form-registo label {
-  display: block;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--texto);
-  margin-bottom: 6px;
-  margin-top: 16px;
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--texto);
+    margin-bottom: 6px;
+    margin-top: 16px;
 }
 
-#form-registo label:first-of-type { margin-top: 0; }
+#form-registo label:first-of-type {
+    margin-top: 0;
+}
 
 #form-registo input,
 #form-registo select {
-  width: 100%;
-  padding: 11px 12px;
-  border-radius: 6px;
-  border: 1px solid #CFCBC0;
-  font-size: 0.95rem;
-  font-family: inherit;
-  background: var(--branco);
-  color: var(--texto);
+    width: 100%;
+    padding: 11px 12px;
+    border-radius: 6px;
+    border: 1px solid #CFCBC0;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: var(--branco);
+    color: var(--texto);
 }
 
 #form-registo input:focus,
 #form-registo select:focus {
-  outline: none;
-  border-color: var(--verde-medio);
+    outline: none;
+    border-color: var(--verde-medio);
 }
+
+
+/* ---------- AVISO DE EMAIL INVÁLIDO ---------- */
+
+.erro-email {
+    display: none;
+    color: #9F2D25;
+    background: #FFF3F2;
+    border: 1px solid #F2C5C1;
+    border-left: 3px solid #C0392B;
+    border-radius: 6px;
+    padding: 9px 11px;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    margin-top: 8px;
+}
+
+/* ---------- AVISO DE PALAVRAS-PASSE ---------- */
 
 .erro-password {
-  display: none;
-  color: #C0392B;
-  font-size: 0.85rem;
-  margin-top: 10px;
+    display: none;
+    color: #C0392B;
+    font-size: 0.85rem;
+    margin-top: 8px;
 }
 
-.erro-password.visivel { display: block; }
+/* Mostrar os avisos quando necessário */
+
+.erro-email.visivel,
+.erro-password.visivel {
+    display: block;
+}
+
+
+/* ---------- ESCONDER / MOSTRAR ---------- */
+
+.escondido {
+    display: none;
+}
+
+
+/* ---------- ECRÃ DE SUCESSO ---------- */
+
+.sucesso-registo {
+    display: none;
+    text-align: center;
+}
+
+.sucesso-registo.visivel {
+    display: block;
+}
+
+.sucesso-icone {
+    width: 56px;
+    height: 56px;
+    line-height: 56px;
+    border-radius: 50%;
+    background: var(--verde-escuro);
+    color: var(--branco);
+    font-size: 1.6rem;
+    margin: 0 auto 18px;
+}
+
+.sucesso-registo h2 {
+    font-size: 1.5rem;
+    color: var(--verde-escuro);
+    margin-bottom: 10px;
+}
+
+.sucesso-registo p {
+    font-size: 0.95rem;
+    color: var(--verde-medio);
+    margin-bottom: 24px;
+}
+
+.sucesso-registo .btn-submit {
+    display: block;
+    margin-bottom: 14px;
+}
+
+.sucesso-registo .link-voltar {
+    display: block;
+    font-size: 0.88rem;
+    color: var(--verde-medio);
+    font-weight: 600;
+}
+
+.sucesso-registo .link-voltar:hover {
+    color: var(--laranja);
+}
+
+
+/* ---------- BOTÃO DE REGISTO ---------- */
 
 .btn-submit {
-  width: 100%;
-  margin-top: 26px;
-  padding: 13px;
-  font-size: 1rem;
+    width: 100%;
+    margin-top: 26px;
+    padding: 13px;
+    font-size: 1rem;
 }
 
+
+/* ---------- ALTERNAR ENTRE REGISTO E LOGIN ---------- */
+
 .registo-troca {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 0.88rem;
-  color: var(--verde-medio);
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.88rem;
+    color: var(--verde-medio);
 }
 
 .registo-troca a {
-  color: var(--laranja);
-  font-weight: 600;
+    color: var(--laranja);
+    font-weight: 600;
 }
 
-/* ---------- RESPONSIVO ---------- */
-@media (max-width: 480px) {
-  .registo-card {
-    padding: 32px 24px;
-  }
 
-  .registo-wrapper {
-    padding: 100px 16px 40px;
-  }
+/* ---------- RESPONSIVO ---------- */
+
+@media (max-width: 480px) {
+    .registo-card {
+        padding: 32px 24px;
+    }
+
+    .registo-wrapper {
+        padding: 100px 16px 40px;
+    }
 }

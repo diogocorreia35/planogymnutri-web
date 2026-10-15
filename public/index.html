@@ -97,6 +97,12 @@
     function alternarMenu() {
       document.getElementById('nav-actions').classList.toggle('ativo');
     }
+
+    // Se vier do registo com sucesso (registo.html?login=1), abre já o modal de login
+    const parametros = new URLSearchParams(window.location.search);
+    if (parametros.get('login') === '1') {
+      abrirModal();
+    }
   </script>
 
 </body>
