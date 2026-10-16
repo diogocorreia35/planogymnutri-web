@@ -18,6 +18,7 @@ app.use(session({
 
 // Serve a pasta "public" (HTML, CSS e JavaScript do site)
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/api/auth', require('./routes/auth'));
 
 // Rota de teste: confirma que o site fala com o servidor, que as sessões funcionam
 // e que o servidor consegue ler a base de dados
