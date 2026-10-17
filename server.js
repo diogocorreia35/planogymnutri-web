@@ -34,6 +34,11 @@ app.get('/api/teste', (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, (erro) => {
+  if (erro) {
+    // Por exemplo: a porta 3000 já está a ser usada por outro servidor
+    console.error('Não foi possível arrancar o servidor:', erro.message);
+    process.exit(1);
+  }
   console.log(`Servidor a correr em http://localhost:${PORT}`);
 });
