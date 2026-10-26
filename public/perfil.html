@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Perfil do Utilizador | NutriFit</title>
+
+    <link rel="icon" type="image/png" href="/imagens/favicon.png">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/perfil.css">
+</head>
+
+<body>
+
+    <!-- CABEÇALHO -->
+    <header>
+        <div class="logo">
+            <a href="index.html" aria-label="NutriFit - Página inicial">
+                <img
+                    src="imagens/logo-nutrifit-Oficial.svg"
+                    alt="NutriFit"
+                    class="logo-img"
+                >
+            </a>
+        </div>
+
+        <nav class="nav-perfil" id="nav-perfil" aria-label="Menu principal">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="treinos.html">Treinos</a>
+            <a href="dietas.html">Dietas</a>
+            <a href="perfil.html" class="ativo" aria-current="page">Perfil</a>
+
+            <button type="button" class="btn btn-outline" id="btn-sair">
+                Sair
+            </button>
+        </nav>
+
+        <button
+            type="button"
+            class="menu-toggle"
+            id="menu-toggle"
+            aria-label="Abrir menu"
+            aria-expanded="false"
+            aria-controls="nav-perfil"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <!-- PERFIL -->
+    <main class="perfil-wrapper">
+
+        <h1 class="perfil-titulo">O meu perfil</h1>
+
+        <div class="perfil-grid">
+
+            <!-- RESUMO DO PERFIL -->
+            <section class="card-perfil perfil-resumo">
+
+                <div style="display:flex; flex-direction:column; align-items:center; gap:10px; flex-shrink:0;">
+
+                    <div class="avatar">
+
+                        <img
+                            id="foto-perfil"
+                            alt="Fotografia de perfil"
+                            hidden
+                            style="width:100%; height:100%; object-fit:cover; border-radius:50%;"
+                        >
+
+                        <svg
+                            id="avatar-padrao"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.6"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                        >
+                            <circle cx="12" cy="8" r="4"></circle>
+                            <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"></path>
+                        </svg>
+
+                    </div>
+
+                    <input
+                        type="file"
+                        id="ficheiro-foto"
+                        accept="image/*"
+                        hidden
+                    >
+
+                    <button
+                        type="button"
+                        class="btn btn-outline"
+                        id="btn-escolher-foto"
+                    >
+                        Alterar fotografia
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn btn-outline"
+                        id="btn-remover-foto"
+                        hidden
+                    >
+                        Remover fotografia
+                    </button>
+
+                </div>
+
+                <div class="resumo-texto">
+
+                    <p class="resumo-nome" id="resumo-nome">
+                        Nome do utilizador
+                    </p>
+
+                    <p class="resumo-email" id="resumo-email">
+                        email@exemplo.pt
+                    </p>
+
+                    <p class="resumo-objetivo">
+                        Objetivo:
+                        <span id="resumo-objetivo">por definir</span>
+                    </p>
+
+                </div>
+
+            </section>
+
+            <!-- FORMULÁRIO -->
+            <section class="card-perfil">
+
+                <form id="form-perfil" class="perfil-form">
+
+                    <div class="campo campo-metade">
+                        <label for="nome">Nome</label>
+
+                        <input
+                            type="text"
+                            id="nome"
+                            name="nome"
+                            placeholder="Nome do utilizador"
+                            maxlength="60"
+                            autocomplete="name"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo campo-metade">
+                        <label for="email">Email (só leitura)</label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="email@exemplo.pt"
+                            readonly
+                        >
+                    </div>
+
+                    <div class="campo campo-terco">
+                        <label for="idade">Idade</label>
+
+                        <input
+                            type="number"
+                            id="idade"
+                            name="idade"
+                            placeholder="25"
+                            min="10"
+                            max="100"
+                        >
+                    </div>
+
+                    <div class="campo campo-terco">
+                        <label for="altura">Altura (cm)</label>
+
+                        <input
+                            type="number"
+                            id="altura"
+                            name="altura"
+                            placeholder="175"
+                            min="100"
+                            max="250"
+                        >
+                    </div>
+
+                    <div class="campo campo-terco">
+                        <label for="peso">Peso (kg)</label>
+
+                        <input
+                            type="number"
+                            id="peso"
+                            name="peso"
+                            placeholder="70"
+                            min="30"
+                            max="300"
+                            step="0.1"
+                        >
+                    </div>
+
+                    <div class="campo campo-total">
+                        <label for="objetivo">Objetivo</label>
+
+                        <select id="objetivo" name="objetivo">
+                            <option value="">Escolhe o teu objetivo</option>
+                            <option value="perder-peso">Perder peso</option>
+                            <option value="manter-peso">Manter peso</option>
+                            <option value="ganhar-massa">Ganhar massa muscular</option>
+                        </select>
+                    </div>
+
+                    <div class="perfil-acoes">
+
+                        <p
+                            class="perfil-msg"
+                            id="perfil-msg"
+                            role="status"
+                            aria-live="polite"
+                            hidden
+                        ></p>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary btn-guardar"
+                            id="btn-guardar"
+                        >
+                            Guardar alterações
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer>
+        <p>&copy; 2026 NutriFit</p>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        'use strict';
+
+        // Elementos gerais.
+        const menuToggle = document.getElementById('menu-toggle');
+        const navPerfil = document.getElementById('nav-perfil');
+        const botaoSair = document.getElementById('btn-sair');
+
+        // Formulário.
+        const form = document.getElementById('form-perfil');
+
+        const campoNome = document.getElementById('nome');
+        const campoEmail = document.getElementById('email');
+        const campoIdade = document.getElementById('idade');
+        const campoAltura = document.getElementById('altura');
+        const campoPeso = document.getElementById('peso');
+        const campoObjetivo = document.getElementById('objetivo');
+
+        const botaoGuardar = document.getElementById('btn-guardar');
+        const mensagem = document.getElementById('perfil-msg');
+
+        // Resumo do perfil.
+        const resumoNome = document.getElementById('resumo-nome');
+        const resumoEmail = document.getElementById('resumo-email');
+        const resumoObjetivo = document.getElementById('resumo-objetivo');
+
+        // Elementos da fotografia.
+        const inputFoto = document.getElementById('ficheiro-foto');
+        const botaoEscolherFoto = document.getElementById('btn-escolher-foto');
+        const botaoRemoverFoto = document.getElementById('btn-remover-foto');
+
+        const fotoPerfil = document.getElementById('foto-perfil');
+        const avatarPadrao = document.getElementById('avatar-padrao');
+
+        const TAMANHO_MAXIMO = 5 * 1024 * 1024;
+        const DIMENSAO_MAXIMA = 512;
+
+        let fotoSelecionada = null;
+        let chaveFoto = null;
+
+        // Abrir e fechar o menu em dispositivos móveis.
+        menuToggle.addEventListener('click', function () {
+            const aberto = navPerfil.classList.toggle('ativo');
+
+            menuToggle.setAttribute('aria-expanded', String(aberto));
+        });
+
+        // Mostrar mensagens de sucesso ou erro.
+        function mostrarMensagem(texto, tipo) {
+            mensagem.textContent = texto;
+            mensagem.className = 'perfil-msg ' + tipo;
+            mensagem.hidden = false;
+        }
+
+        // Atualizar o resumo apresentado no cartão.
+        function atualizarResumo() {
+            resumoNome.textContent =
+                campoNome.value.trim() || 'Nome do utilizador';
+
+            const opcao =
+                campoObjetivo.options[campoObjetivo.selectedIndex];
+
+            resumoObjetivo.textContent = campoObjetivo.value
+                ? opcao.text.toLowerCase()
+                : 'por definir';
+        }
+
+        campoNome.addEventListener('input', atualizarResumo);
+
+        campoObjetivo.addEventListener('change', atualizarResumo);
+
+        // Apresentar a fotografia ou o avatar padrão.
+        function mostrarFoto(foto) {
+            fotoSelecionada = foto || null;
+
+            if (fotoSelecionada) {
+                fotoPerfil.src = fotoSelecionada;
+                fotoPerfil.hidden = false;
+                avatarPadrao.hidden = true;
+                botaoRemoverFoto.hidden = false;
+            } else {
+                fotoPerfil.removeAttribute('src');
+                fotoPerfil.hidden = true;
+                avatarPadrao.hidden = false;
+                botaoRemoverFoto.hidden = true;
+            }
+        }
+
+        // Criar uma chave local específica para cada conta.
+        function criarChaveFoto(email) {
+            return 'nutrifit_foto_perfil_' +
+                encodeURIComponent(email.trim().toLowerCase());
+        }
+
+        // Ler a fotografia guardada no navegador.
+        function carregarFotoLocal() {
+            if (!chaveFoto) {
+                mostrarFoto(null);
+                return;
+            }
+
+            try {
+                mostrarFoto(localStorage.getItem(chaveFoto));
+            } catch (erro) {
+                mostrarFoto(null);
+            }
+        }
+
+        // Guardar a fotografia no navegador.
+        function guardarFotoLocal() {
+            if (!chaveFoto) {
+                return false;
+            }
+
+            try {
+                if (fotoSelecionada) {
+                    localStorage.setItem(chaveFoto, fotoSelecionada);
+                } else {
+                    localStorage.removeItem(chaveFoto);
+                }
+
+                return true;
+            } catch (erro) {
+                return false;
+            }
+        }
+
+        // Abrir o seletor de ficheiros do computador.
+        botaoEscolherFoto.addEventListener('click', function () {
+            inputFoto.click();
+        });
+
+        // Redimensionar a imagem para reduzir o espaço ocupado.
+        function processarFoto(ficheiro) {
+            return new Promise(function (resolve, reject) {
+                const urlTemporario = URL.createObjectURL(ficheiro);
+                const imagem = new Image();
+
+                imagem.onload = function () {
+                    URL.revokeObjectURL(urlTemporario);
+
+                    const larguraOriginal = imagem.naturalWidth;
+                    const alturaOriginal = imagem.naturalHeight;
+
+                    if (!larguraOriginal || !alturaOriginal) {
+                        reject(new Error('A imagem selecionada é inválida.'));
+                        return;
+                    }
+
+                    const escala = Math.min(
+                        1,
+                        DIMENSAO_MAXIMA /
+                            Math.max(larguraOriginal, alturaOriginal)
+                    );
+
+                    const largura = Math.max(
+                        1,
+                        Math.round(larguraOriginal * escala)
+                    );
+
+                    const altura = Math.max(
+                        1,
+                        Math.round(alturaOriginal * escala)
+                    );
+
+                    const canvas = document.createElement('canvas');
+
+                    canvas.width = largura;
+                    canvas.height = altura;
+
+                    const contexto = canvas.getContext('2d');
+
+                    if (!contexto) {
+                        reject(new Error('Não foi possível processar a imagem.'));
+                        return;
+                    }
+
+                    contexto.drawImage(imagem, 0, 0, largura, altura);
+
+                    resolve(canvas.toDataURL('image/jpeg', 0.82));
+                };
+
+                imagem.onerror = function () {
+                    URL.revokeObjectURL(urlTemporario);
+
+                    reject(
+                        new Error('Não foi possível abrir a imagem selecionada.')
+                    );
+                };
+
+                imagem.src = urlTemporario;
+            });
+        }
+
+        // Selecionar e apresentar a nova fotografia.
+        inputFoto.addEventListener('change', async function () {
+            const ficheiro = inputFoto.files[0];
+
+            if (!ficheiro) {
+                return;
+            }
+
+            mensagem.hidden = true;
+
+            if (!ficheiro.type.startsWith('image/')) {
+                mostrarMensagem(
+                    'Seleciona um ficheiro de imagem válido.',
+                    'erro'
+                );
+
+                inputFoto.value = '';
+                return;
+            }
+
+            if (ficheiro.size > TAMANHO_MAXIMO) {
+                mostrarMensagem(
+                    'A fotografia não pode ultrapassar 5 MB.',
+                    'erro'
+                );
+
+                inputFoto.value = '';
+                return;
+            }
+
+            botaoEscolherFoto.disabled = true;
+
+            try {
+                const imagemProcessada = await processarFoto(ficheiro);
+
+                mostrarFoto(imagemProcessada);
+
+                mostrarMensagem(
+                    'Fotografia selecionada. Carrega em Guardar alterações para confirmar.',
+                    'ok'
+                );
+            } catch (erro) {
+                mostrarMensagem(
+                    erro.message || 'Não foi possível carregar a fotografia.',
+                    'erro'
+                );
+            } finally {
+                botaoEscolherFoto.disabled = false;
+                inputFoto.value = '';
+            }
+        });
+
+        // Remover a fotografia selecionada.
+        botaoRemoverFoto.addEventListener('click', function () {
+            mostrarFoto(null);
+
+            mostrarMensagem(
+                'Fotografia removida. Carrega em Guardar alterações para confirmar.',
+                'ok'
+            );
+        });
+
+        // Converter campos numéricos vazios em null.
+        function numeroOuNulo(valor) {
+            return valor === '' ? null : Number(valor);
+        }
+
+        // Carregar os dados do utilizador e do perfil.
+        async function carregarPerfil() {
+            try {
+                const respostaAuth = await fetch('/api/auth/eu');
+                const dadosAuth = await respostaAuth.json();
+
+                if (!respostaAuth.ok || !dadosAuth.logado) {
+                    window.location.href = 'index.html?login=1';
+                    return;
+                }
+
+                const utilizador = dadosAuth.utilizador || {};
+
+                campoNome.value = utilizador.nome || '';
+                campoEmail.value = utilizador.email || '';
+
+                resumoEmail.textContent =
+                    utilizador.email || 'email@exemplo.pt';
+
+                chaveFoto = criarChaveFoto(campoEmail.value);
+
+                const respostaPerfil = await fetch('/api/perfil');
+
+                if (respostaPerfil.status === 401) {
+                    window.location.href = 'index.html?login=1';
+                    return;
+                }
+
+                if (respostaPerfil.ok) {
+                    const perfil = await respostaPerfil.json();
+
+                    campoIdade.value = perfil.idade ?? '';
+                    campoAltura.value = perfil.altura ?? '';
+                    campoPeso.value = perfil.peso ?? '';
+                    campoObjetivo.value = perfil.objetivo || '';
+
+                    // Se o servidor já tiver uma fotografia guardada,
+                    // utiliza-a; caso contrário, procura no navegador.
+                    const fotoServidor =
+                        perfil.fotoPerfil ||
+                        perfil.foto_perfil ||
+                        perfil.avatar ||
+                        null;
+
+                    if (fotoServidor) {
+                        mostrarFoto(fotoServidor);
+                    } else {
+                        carregarFotoLocal();
+                    }
+                } else {
+                    carregarFotoLocal();
+                }
+
+                atualizarResumo();
+            } catch (erro) {
+                mostrarMensagem(
+                    'Não foi possível carregar o perfil. Confirma se o servidor está a funcionar.',
+                    'erro'
+                );
+            }
+        }
+
+        // Guardar os dados e a fotografia.
+        form.addEventListener('submit', async function (evento) {
+            evento.preventDefault();
+
+            mensagem.hidden = true;
+
+            if (!form.reportValidity()) {
+                return;
+            }
+
+            botaoGuardar.disabled = true;
+            botaoEscolherFoto.disabled = true;
+            botaoRemoverFoto.disabled = true;
+
+            try {
+                const resposta = await fetch('/api/perfil', {
+                    method: 'PUT',
+
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+
+                    body: JSON.stringify({
+                        nome: campoNome.value.trim(),
+                        idade: numeroOuNulo(campoIdade.value),
+                        altura: numeroOuNulo(campoAltura.value),
+                        peso: numeroOuNulo(campoPeso.value),
+                        objetivo: campoObjetivo.value || null,
+
+                        // O backend deve aceitar este campo para
+                        // guardar a fotografia na conta.
+                        fotoPerfil: fotoSelecionada
+                    })
+                });
+
+                const dados = await resposta.json().catch(function () {
+                    return {};
+                });
+
+                if (resposta.ok) {
+                    atualizarResumo();
+
+                    const fotoGuardada = guardarFotoLocal();
+
+                    if (fotoGuardada) {
+                        mostrarMensagem(
+                            'Alterações guardadas com sucesso.',
+                            'ok'
+                        );
+                    } else {
+                        mostrarMensagem(
+                            'Os dados foram enviados ao servidor, mas não foi possível guardar a fotografia neste navegador.',
+                            'erro'
+                        );
+                    }
+                } else if (resposta.status === 401) {
+                    window.location.href = 'index.html?login=1';
+                } else {
+                    mostrarMensagem(
+                        dados.erro ||
+                        'Não foi possível guardar as alterações. Tenta novamente.',
+                        'erro'
+                    );
+                }
+            } catch (erro) {
+                mostrarMensagem(
+                    'Não consegui comunicar com o servidor. Confirma se está a funcionar.',
+                    'erro'
+                );
+            } finally {
+                botaoGuardar.disabled = false;
+                botaoEscolherFoto.disabled = false;
+                botaoRemoverFoto.disabled = false;
+            }
+        });
+
+        // Terminar sessão.
+        botaoSair.addEventListener('click', async function () {
+            try {
+                await fetch('/api/auth/logout', {
+                    method: 'POST'
+                });
+            } catch (erro) {
+                // Continua para a página inicial.
+            }
+
+            window.location.href = 'index.html';
+        });
+
+        // Iniciar a página.
+        carregarPerfil();
+    </script>
+
+</body>
+</html>
