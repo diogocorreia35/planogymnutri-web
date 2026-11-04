@@ -1,10 +1,9 @@
 const Database = require('better-sqlite3');
 const path = require('path');
 
-// Abre o ficheiro database.sqlite (se não existir, é criado agora)
 const db = new Database(path.join(__dirname, 'database.sqlite'));
 
-// Sem esta linha o SQLite ignora as chaves estrangeiras (e o ON DELETE CASCADE)
+// Ativa as chaves estrangeiras e as regras ON DELETE CASCADE definidas no esquema.
 db.pragma('foreign_keys = ON');
 
 // ---------- Tabelas (só são criadas se ainda não existirem) ----------
@@ -164,7 +163,7 @@ const alimentos = [
   ['Abacate', 'Gorduras', 160, 2, 8.5, 14.7]
 ];
 
-// INSERT OR IGNORE: se o item já existe, é saltado. Por isso podes correr isto as vezes que quiseres
+// INSERT OR IGNORE torna a carga inicial segura para executar mais do que uma vez.
 const inserirExercicio = db.prepare(
   'INSERT OR IGNORE INTO exercicios (nome, grupo_muscular, dificuldade) VALUES (?, ?, ?)'
 );
@@ -172,16 +171,15 @@ const inserirAlimento = db.prepare(
   'INSERT OR IGNORE INTO alimentos (nome, categoria, calorias_100g, proteina_100g, hidratos_100g, gordura_100g) VALUES (?, ?, ?, ?, ?, ?)'
 );
 
-// Transação: ou entra tudo, ou não entra nada
+// Evita deixar apenas parte dos dados iniciais inserida se ocorrer um erro.
 db.transaction(() => {
   exercicios.forEach((e) => inserirExercicio.run(...e));
   alimentos.forEach((a) => inserirAlimento.run(...a));
 })();
 
-// O resto do projeto usa a base de dados com: const db = require('./db');
 module.exports = db;
 
-// Se correres "node db.js" no terminal, mostra quantos registos há em cada tabela
+// Ao executar este ficheiro diretamente, apresenta a contagem das tabelas.
 if (require.main === module) {
   const tabelas = [
     'utilizadores', 'exercicios', 'planos_treino', 'plano_treino_exercicios',

@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="css/registo.css">
 
     <style>
-        /* Aviso geral do formulário (erros do servidor ou campos em falta).
-           Podes mover isto para css/registo.css e usar as cores do NutriFit. */
         .erro-geral {
             color: #b00020;
             font-size: 0.9rem;
@@ -54,7 +52,6 @@
 
             <form id="form-registo" novalidate>
 
-                <!-- Nome -->
                 <label for="nome">Nome</label>
                 <input
                     type="text"
@@ -64,7 +61,6 @@
                     required
                 >
 
-                <!-- Email -->
                 <label for="email">Email</label>
                 <input
                     type="email"
@@ -75,7 +71,6 @@
                     required
                 >
 
-                <!-- Aviso de email inválido -->
                 <p
                     class="erro-email"
                     id="erro-email"
@@ -85,7 +80,6 @@
                     por exemplo nome@dominio.com.
                 </p>
 
-                <!-- Palavra-passe -->
                 <label for="password">Palavra-passe</label>
                 <input
                     type="password"
@@ -96,7 +90,6 @@
                     required
                 >
 
-                <!-- Confirmar palavra-passe -->
                 <label for="confirmar-password">
                     Confirmar palavra-passe
                 </label>
@@ -110,12 +103,10 @@
                     required
                 >
 
-                <!-- Aviso de palavras-passe diferentes -->
                 <p class="erro-password" id="erro-password">
                     As palavras-passe não coincidem.
                 </p>
 
-                <!-- Aviso geral (campos em falta ou erros do servidor) -->
                 <p class="erro-geral" id="erro-geral" role="alert" hidden></p>
 
                 <button
@@ -182,17 +173,14 @@
         const botaoSubmit =
             form.querySelector('button[type="submit"]');
 
-        // Tamanho mínimo da palavra-passe (igual ao do servidor).
+        // Deve corresponder ao limite validado pelo servidor.
         const PASSWORD_MIN = 6;
 
-        // Verifica o formato do email.
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        // Validação do email enquanto o utilizador escreve.
         email.addEventListener('input', function () {
             const emailAtual = email.value.trim();
 
-            // Esconde o aviso quando o campo está vazio.
             if (emailAtual === '') {
                 erroEmail.classList.remove('visivel');
                 email.setAttribute('aria-invalid', 'false');
@@ -202,7 +190,6 @@
             atualizarAvisoEmail();
         });
 
-        // Mostra ou esconde o aviso do email.
         function atualizarAvisoEmail() {
             const emailValido =
                 emailRegex.test(email.value.trim());
@@ -220,13 +207,12 @@
             return emailValido;
         }
 
-        // Mostra o aviso geral por cima do botão.
         function mostrarErroGeral(texto) {
             erroGeral.textContent = texto;
             erroGeral.hidden = false;
         }
 
-        // Validação do formulário e envio para o servidor.
+        // O servidor repete estas validações; aqui servem para dar feedback imediato.
         form.addEventListener('submit', async function (e) {
             e.preventDefault();
 
@@ -234,12 +220,10 @@
 
             let valido = true;
 
-            // Verifica o email.
             if (!atualizarAvisoEmail()) {
                 valido = false;
             }
 
-            // Verifica se as palavras-passe coincidem.
             if (password.value !== confirmarPassword.value) {
                 erroPassword.classList.add('visivel');
                 valido = false;
@@ -247,12 +231,10 @@
                 erroPassword.classList.remove('visivel');
             }
 
-            // Impede o avanço se existirem erros.
             if (!valido) {
                 return;
             }
 
-            // Verificações que o "novalidate" do formulário desativa.
             if (nome.value.trim() === '') {
                 mostrarErroGeral('Escreve o teu nome.');
                 return;
@@ -266,7 +248,6 @@
                 return;
             }
 
-            // Envia os dados para o servidor (routes/auth.js).
             botaoSubmit.disabled = true;
 
             try {
@@ -280,7 +261,7 @@
                     })
                 });
 
-                // Se a resposta não for JSON, usa um objeto vazio.
+                // Permite apresentar a mensagem genérica abaixo se a resposta não for JSON.
                 const dados = await resposta.json().catch(function () {
                     return {};
                 });
@@ -303,7 +284,6 @@
             }
         });
 
-        // Mostra o ecrã de sucesso.
         function mostrarEcraSucesso() {
             document.getElementById('registo-titulo')
                 .classList.add('escondido');

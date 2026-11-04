@@ -251,12 +251,10 @@
     <script>
         'use strict';
 
-        // Elementos gerais.
         const menuToggle = document.getElementById('menu-toggle');
         const navPerfil = document.getElementById('nav-perfil');
         const botaoSair = document.getElementById('btn-sair');
 
-        // Formulário.
         const form = document.getElementById('form-perfil');
 
         const campoNome = document.getElementById('nome');
@@ -269,12 +267,10 @@
         const botaoGuardar = document.getElementById('btn-guardar');
         const mensagem = document.getElementById('perfil-msg');
 
-        // Resumo do perfil.
         const resumoNome = document.getElementById('resumo-nome');
         const resumoEmail = document.getElementById('resumo-email');
         const resumoObjetivo = document.getElementById('resumo-objetivo');
 
-        // Elementos da fotografia.
         const inputFoto = document.getElementById('ficheiro-foto');
         const botaoEscolherFoto = document.getElementById('btn-escolher-foto');
         const botaoRemoverFoto = document.getElementById('btn-remover-foto');
@@ -288,21 +284,18 @@
         let fotoSelecionada = null;
         let chaveFoto = null;
 
-        // Abrir e fechar o menu em dispositivos móveis.
         menuToggle.addEventListener('click', function () {
             const aberto = navPerfil.classList.toggle('ativo');
 
             menuToggle.setAttribute('aria-expanded', String(aberto));
         });
 
-        // Mostrar mensagens de sucesso ou erro.
         function mostrarMensagem(texto, tipo) {
             mensagem.textContent = texto;
             mensagem.className = 'perfil-msg ' + tipo;
             mensagem.hidden = false;
         }
 
-        // Atualizar o resumo apresentado no cartão.
         function atualizarResumo() {
             resumoNome.textContent =
                 campoNome.value.trim() || 'Nome do utilizador';
@@ -319,7 +312,6 @@
 
         campoObjetivo.addEventListener('change', atualizarResumo);
 
-        // Apresentar a fotografia ou o avatar padrão.
         function mostrarFoto(foto) {
             fotoSelecionada = foto || null;
 
@@ -336,13 +328,12 @@
             }
         }
 
-        // Criar uma chave local específica para cada conta.
+        // Separa as fotografias locais de contas diferentes no mesmo navegador.
         function criarChaveFoto(email) {
             return 'nutrifit_foto_perfil_' +
                 encodeURIComponent(email.trim().toLowerCase());
         }
 
-        // Ler a fotografia guardada no navegador.
         function carregarFotoLocal() {
             if (!chaveFoto) {
                 mostrarFoto(null);
@@ -356,7 +347,6 @@
             }
         }
 
-        // Guardar a fotografia no navegador.
         function guardarFotoLocal() {
             if (!chaveFoto) {
                 return false;
@@ -375,12 +365,11 @@
             }
         }
 
-        // Abrir o seletor de ficheiros do computador.
         botaoEscolherFoto.addEventListener('click', function () {
             inputFoto.click();
         });
 
-        // Redimensionar a imagem para reduzir o espaço ocupado.
+        // Limita a imagem a 512 px e converte-a para JPEG antes de guardar.
         function processarFoto(ficheiro) {
             return new Promise(function (resolve, reject) {
                 const urlTemporario = URL.createObjectURL(ficheiro);
@@ -442,7 +431,6 @@
             });
         }
 
-        // Selecionar e apresentar a nova fotografia.
         inputFoto.addEventListener('change', async function () {
             const ficheiro = inputFoto.files[0];
 
@@ -494,7 +482,6 @@
             }
         });
 
-        // Remover a fotografia selecionada.
         botaoRemoverFoto.addEventListener('click', function () {
             mostrarFoto(null);
 
@@ -504,12 +491,10 @@
             );
         });
 
-        // Converter campos numéricos vazios em null.
         function numeroOuNulo(valor) {
             return valor === '' ? null : Number(valor);
         }
 
-        // Carregar os dados do utilizador e do perfil.
         async function carregarPerfil() {
             try {
                 const respostaAuth = await fetch('/api/auth/eu');
@@ -545,8 +530,7 @@
                     campoPeso.value = perfil.peso ?? '';
                     campoObjetivo.value = perfil.objetivo || '';
 
-                    // Se o servidor já tiver uma fotografia guardada,
-                    // utiliza-a; caso contrário, procura no navegador.
+                    // Dá prioridade à cópia do servidor e recorre ao navegador como alternativa.
                     const fotoServidor =
                         perfil.fotoPerfil ||
                         perfil.foto_perfil ||
@@ -571,7 +555,6 @@
             }
         }
 
-        // Guardar os dados e a fotografia.
         form.addEventListener('submit', async function (evento) {
             evento.preventDefault();
 
@@ -600,8 +583,6 @@
                         peso: numeroOuNulo(campoPeso.value),
                         objetivo: campoObjetivo.value || null,
 
-                        // O backend deve aceitar este campo para
-                        // guardar a fotografia na conta.
                         fotoPerfil: fotoSelecionada
                     })
                 });
@@ -647,20 +628,18 @@
             }
         });
 
-        // Terminar sessão.
         botaoSair.addEventListener('click', async function () {
             try {
                 await fetch('/api/auth/logout', {
                     method: 'POST'
                 });
             } catch (erro) {
-                // Continua para a página inicial.
+                // Mesmo sem resposta, a navegação para o início deve prosseguir.
             }
 
             window.location.href = 'index.html';
         });
 
-        // Iniciar a página.
         carregarPerfil();
     </script>
 

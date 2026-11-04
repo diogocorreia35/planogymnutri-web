@@ -1,13 +1,10 @@
-// sessao.js: trata da sessão em todas as páginas.
-//  1) pergunta ao servidor se há sessão iniciada (rota /api/auth/eu)
-//  2) mostra a barra do topo certa: "Entrar / Criar conta"  OU  "Olá, nome / O meu perfil / Sair"
-//  3) liga o formulário de login (o modal da página inicial) ao servidor
+// Partilha o estado de autenticação e o login entre as páginas do site.
 (function () {
   const barra = document.getElementById('nav-actions') || document.querySelector('.nav-actions');
   const overlay = document.getElementById('overlay-login') || document.querySelector('.overlay');
   const formLogin = document.getElementById('form-login') || (overlay && overlay.querySelector('form'));
 
-  // Usam as funções do index.html, se existirem; senão mexem na classe "ativo" do overlay
+  // Reutiliza as funções da página inicial ou altera o modal diretamente nas outras páginas.
   function abrirLogin() {
     if (typeof abrirModal === 'function') abrirModal();
     else if (overlay) overlay.classList.add('ativo');
@@ -18,13 +15,12 @@
     else if (overlay) overlay.classList.remove('ativo');
   }
 
-  // Troca "Entrar / Criar conta" por "Olá, nome / O meu perfil / Sair"
   function mostrarSessaoIniciada(utilizador) {
     if (!barra) return;
 
     const ola = document.createElement('span');
     ola.className = 'texto-ola';
-    ola.textContent = 'Olá, ' + utilizador.nome; // textContent: o nome nunca é tratado como HTML
+    ola.textContent = 'Olá, ' + utilizador.nome;
 
     const perfil = document.createElement('a');
     perfil.href = '/perfil.html';
@@ -37,27 +33,24 @@
     sair.textContent = 'Sair';
     sair.addEventListener('click', terminarSessao);
 
-    barra.textContent = ''; // limpa os botões antigos
+    barra.textContent = '';
     barra.append(ola, perfil, sair);
   }
 
-  // Botão "Sair": avisa o servidor e volta à página inicial
   async function terminarSessao() {
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
     } catch (erro) {
-      // mesmo sem resposta do servidor, volta à página inicial
+      // A navegação para o início prossegue mesmo se o servidor não responder.
     }
     window.location.href = '/index.html';
   }
 
-  // Formulário de login (o do modal da página inicial)
   if (formLogin) {
     const campoEmail = formLogin.querySelector('input[type="email"]');
     const campoPassword = formLogin.querySelector('input[type="password"]');
     const botao = formLogin.querySelector('button[type="submit"]');
 
-    // Linha para mostrar erros (é criada aqui se a página ainda não tiver uma)
     let erro = formLogin.querySelector('.erro-login');
     if (!erro) {
       erro = document.createElement('p');
@@ -70,7 +63,7 @@
     }
 
     formLogin.addEventListener('submit', async function (e) {
-      e.preventDefault(); // impede a página de recarregar
+      e.preventDefault();
       erro.hidden = true;
 
       if (!campoEmail.value.trim() || !campoPassword.value) {
@@ -79,7 +72,7 @@
         return;
       }
 
-      if (botao) botao.disabled = true; // evita cliques repetidos enquanto espera
+      if (botao) botao.disabled = true;
       try {
         const resposta = await fetch('/api/auth/login', {
           method: 'POST',
@@ -105,9 +98,8 @@
     });
   }
 
-  // Ao abrir a página: pergunta ao servidor quem está com sessão iniciada
   async function iniciar() {
-    // Esconde a barra por instantes, para quem já tem sessão não ver "Entrar" a piscar
+    // Evita mostrar por instantes os controlos de utilizador não autenticado.
     if (barra) barra.style.visibility = 'hidden';
 
     let logado = false;
@@ -119,11 +111,10 @@
         mostrarSessaoIniciada(dados.utilizador);
       }
     } catch (falha) {
-      // sem servidor: a página fica como está
+      // Sem resposta, mantém os controlos de autenticação já renderizados.
     }
     if (barra) barra.style.visibility = '';
 
-    // Vindo do registo ("Fazer login"), o endereço traz ?login=1 e o modal abre sozinho
     const pedirLogin = new URLSearchParams(window.location.search).get('login') === '1';
     if (pedirLogin && !logado) abrirLogin();
   }
