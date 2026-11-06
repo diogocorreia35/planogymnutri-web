@@ -25,6 +25,7 @@
             </a>
         </div>
 
+        <!-- Menu da área do utilizador -->
         <nav class="nav-perfil" id="nav-perfil" aria-label="Menu principal">
             <a href="dashboard.html">Dashboard</a>
             <a href="treinos.html">Treinos</a>
@@ -36,6 +37,7 @@
             </button>
         </nav>
 
+        <!-- Botão do menu (só aparece no telemóvel) -->
         <button
             type="button"
             class="menu-toggle"
@@ -60,6 +62,7 @@
             <!-- RESUMO DO PERFIL -->
             <section class="card-perfil perfil-resumo">
 
+                <!-- Fotografia de perfil e botões para a alterar ou remover -->
                 <div style="display:flex; flex-direction:column; align-items:center; gap:10px; flex-shrink:0;">
 
                     <div class="avatar">
@@ -113,6 +116,7 @@
 
                 </div>
 
+                <!-- Nome, email e objetivo (o nome e o objetivo acompanham o formulário) -->
                 <div class="resumo-texto">
 
                     <p class="resumo-nome" id="resumo-nome">
@@ -152,7 +156,7 @@
                     </div>
 
                     <div class="campo campo-metade">
-                        <label for="email">Email (só leitura)</label>
+                        <label for="email">Email</label>
 
                         <input
                             type="email"
@@ -249,8 +253,13 @@
 
     <!-- JAVASCRIPT -->
     <script>
+        // Esta página mostra e edita o perfil de quem tem sessão iniciada:
+        //  sem sessão, volta à página inicial com o modal de login aberto;
+        //  preenche o formulário com os dados do utilizador;
+        //  envia as alterações ao servidor e guarda a fotografia neste browser.
         'use strict';
 
+        // Elementos da página que o script usa.
         const menuToggle = document.getElementById('menu-toggle');
         const navPerfil = document.getElementById('nav-perfil');
         const botaoSair = document.getElementById('btn-sair');
@@ -278,24 +287,30 @@
         const fotoPerfil = document.getElementById('foto-perfil');
         const avatarPadrao = document.getElementById('avatar-padrao');
 
+        // Limites da foto
         const TAMANHO_MAXIMO = 5 * 1024 * 1024;
         const DIMENSAO_MAXIMA = 512;
 
+        // fotoSelecionada: a fotografia atual (texto base64) ou null, se não houver.
+        // chaveFoto: o nome com que a fotografia fica guardada neste browser.
         let fotoSelecionada = null;
         let chaveFoto = null;
 
+        // Abre e fecha o menu no telemóvel.
         menuToggle.addEventListener('click', function () {
             const aberto = navPerfil.classList.toggle('ativo');
 
             menuToggle.setAttribute('aria-expanded', String(aberto));
         });
 
+        // Mostra uma mensagem por cima do botão Guardar 
         function mostrarMensagem(texto, tipo) {
             mensagem.textContent = texto;
             mensagem.className = 'perfil-msg ' + tipo;
             mensagem.hidden = false;
         }
 
+        // Atualiza o cartão da esquerda (nome e objetivo) com o que está no formulário.
         function atualizarResumo() {
             resumoNome.textContent =
                 campoNome.value.trim() || 'Nome do utilizador';
@@ -308,10 +323,12 @@
                 : 'por definir';
         }
 
+        // O resumo acompanha o que o utilizador escreve.
         campoNome.addEventListener('input', atualizarResumo);
 
         campoObjetivo.addEventListener('change', atualizarResumo);
 
+        // Mostra a fotografia (ou o ícone por defeito, se não houver) e o botão de a remover.
         function mostrarFoto(foto) {
             fotoSelecionada = foto || null;
 
@@ -328,12 +345,14 @@
             }
         }
 
-        // Separa as fotografias locais de contas diferentes no mesmo navegador.
+        // A fotografia fica guardada neste browser e o email faz parte do nome,
+        // para contas diferentes no mesmo browser não partilharem fotografias.
         function criarChaveFoto(email) {
             return 'nutrifit_foto_perfil_' +
                 encodeURIComponent(email.trim().toLowerCase());
         }
 
+        // Lê a fotografia guardada neste browser.
         function carregarFotoLocal() {
             if (!chaveFoto) {
                 mostrarFoto(null);
@@ -347,6 +366,7 @@
             }
         }
 
+        // Guarda ou apaga a fotografia neste browser. Devolve false se não conseguir.
         function guardarFotoLocal() {
             if (!chaveFoto) {
                 return false;
@@ -365,11 +385,12 @@
             }
         }
 
+        // "Alterar fotografia" abre a janela de escolha de ficheiro.
         botaoEscolherFoto.addEventListener('click', function () {
             inputFoto.click();
         });
 
-        // Limita a imagem a 512 px e converte-a para JPEG antes de guardar.
+        // Reduz a imagem para 512 px e converte-a para JPEG antes de a guardar.
         function processarFoto(ficheiro) {
             return new Promise(function (resolve, reject) {
                 const urlTemporario = URL.createObjectURL(ficheiro);
@@ -431,6 +452,7 @@
             });
         }
 
+        // Quando o utilizador escolhe um ficheiro: valida o tipo e o tamanho e mostra a fotografia.
         inputFoto.addEventListener('change', async function () {
             const ficheiro = inputFoto.files[0];
 
@@ -482,6 +504,7 @@
             }
         });
 
+        // "Remover fotografia" volta ao ícone por defeito (só fica guardado ao carregar em Guardar alterações).
         botaoRemoverFoto.addEventListener('click', function () {
             mostrarFoto(null);
 
@@ -491,10 +514,12 @@
             );
         });
 
+        // Campo vazio dá null; caso contrário, converte o texto em número.
         function numeroOuNulo(valor) {
             return valor === '' ? null : Number(valor);
         }
 
+        // Ao abrir a página: confirma que há sessão, preenche o formulário e carrega a fotografia.
         async function carregarPerfil() {
             try {
                 const respostaAuth = await fetch('/api/auth/eu');
@@ -515,6 +540,7 @@
 
                 chaveFoto = criarChaveFoto(campoEmail.value);
 
+                // Dados do perfil guardados no servidor (idade, altura, peso e objetivo).
                 const respostaPerfil = await fetch('/api/perfil');
 
                 if (respostaPerfil.status === 401) {
@@ -530,7 +556,7 @@
                     campoPeso.value = perfil.peso ?? '';
                     campoObjetivo.value = perfil.objetivo || '';
 
-                    // Dá prioridade à cópia do servidor e recorre ao navegador como alternativa.
+                    // Usa a fotografia do servidor, se existir senão, a que está guardada neste browser.
                     const fotoServidor =
                         perfil.fotoPerfil ||
                         perfil.foto_perfil ||
@@ -555,6 +581,7 @@
             }
         }
 
+        // Ao carregar em "Guardar alterações": valida o formulário e envia os dados ao servidor.
         form.addEventListener('submit', async function (evento) {
             evento.preventDefault();
 
@@ -628,18 +655,20 @@
             }
         });
 
+        // Botão Sair que termina a sessão no servidor e volta à página inicial.
         botaoSair.addEventListener('click', async function () {
             try {
                 await fetch('/api/auth/logout', {
                     method: 'POST'
                 });
             } catch (erro) {
-                // Mesmo sem resposta, a navegação para o início deve prosseguir.
+                // Mesmo sem resposta do servidor, volta à página inicial.
             }
 
             window.location.href = 'index.html';
         });
 
+        // Arranque da página.
         carregarPerfil();
     </script>
 

@@ -1,5 +1,6 @@
+/* Estilos da página de registo (registo.html). Junta-se aos de index.css. */
 
-/* ---------- CABEÇALHO DO REGISTO ---------- */
+/*  CABEÇALHO DO REGISTO  */
 
 .texto-ja-tens-conta {
     font-size: 0.9rem;
@@ -7,7 +8,7 @@
 }
 
 
-/* ---------- LAYOUT DA PÁGINA ---------- */
+/*  LAYOUT DA PÁGINA  */
 
 .registo-wrapper {
     min-height: 100vh;
@@ -39,7 +40,7 @@
 }
 
 
-/* ---------- FORMULÁRIO ---------- */
+/*  FORMULÁRIO  */
 
 #form-registo label {
     display: block;
@@ -54,8 +55,7 @@
     margin-top: 0;
 }
 
-#form-registo input,
-#form-registo select {
+#form-registo input {
     width: 100%;
     padding: 11px 12px;
     border-radius: 6px;
@@ -66,14 +66,13 @@
     color: var(--texto);
 }
 
-#form-registo input:focus,
-#form-registo select:focus {
+#form-registo input:focus {
     outline: none;
     border-color: var(--verde-medio);
 }
 
 
-/* ---------- AVISO DE EMAIL INVÁLIDO ---------- */
+/*  AVISO DE EMAIL INVÁLIDO  */
 
 .erro-email {
     display: none;
@@ -88,7 +87,7 @@
     margin-top: 8px;
 }
 
-/* ---------- AVISO DE PALAVRAS-PASSE ---------- */
+/*  AVISO DE PALAVRAS-PASSE  */
 
 .erro-password {
     display: none;
@@ -97,7 +96,7 @@
     margin-top: 8px;
 }
 
-/* Mostrar os avisos quando necessário */
+/* O JavaScript põe a classe .visivel para mostrar estes avisos */
 
 .erro-email.visivel,
 .erro-password.visivel {
@@ -105,14 +104,24 @@
 }
 
 
-/* ---------- ESCONDER / MOSTRAR ---------- */
+/*  AVISO GERAL (campos em falta ou erros do servidor)  */
+
+.erro-geral {
+    color: #b00020;
+    font-size: 0.9rem;
+    margin: 8px 0 0;
+}
+
+
+/*  ESCONDER / MOSTRAR  */
+/* O JavaScript usa .escondido para tirar o formulário e mostrar o ecrã de sucesso */
 
 .escondido {
     display: none;
 }
 
 
-/* ---------- ECRÃ DE SUCESSO ---------- */
+/*  ECRÃ DE SUCESSO  */
 
 .sucesso-registo {
     display: none;
@@ -163,7 +172,7 @@
 }
 
 
-/* ---------- BOTÃO DE REGISTO ---------- */
+/*  BOTÃO DE REGISTO  */
 
 .btn-submit {
     width: 100%;
@@ -173,7 +182,7 @@
 }
 
 
-/* ---------- ALTERNAR ENTRE REGISTO E LOGIN ---------- */
+/*  ALTERNAR ENTRE REGISTO E LOGIN  */
 
 .registo-troca {
     text-align: center;
@@ -188,7 +197,7 @@
 }
 
 
-/* ---------- RESPONSIVO ---------- */
+/*  RESPONSIVIDADE  */
 
 @media (max-width: 480px) {
     .registo-card {

@@ -1,3 +1,7 @@
+/* Estilos principais do site: cores, cabeçalho, botões, página inicial e modal de login.
+   É usado por todas as páginas e o registo e o perfil acrescentam os seus próprios estilos. */
+
+/*  CORES  */
 :root {
   --verde-escuro: #1B4332;
   --verde-medio: #52796F;
@@ -7,6 +11,7 @@
   --branco: #FFFFFF;
 }
 
+/*  BASE  */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -18,7 +23,7 @@ body {
 
 a { text-decoration: none; color: inherit; }
 
-/* ---------- NAVBAR ---------- */
+/*  NAVBAR  */
 header {
   position: fixed;
   top: 0;
@@ -46,8 +51,6 @@ header {
   object-fit: contain;
 }
 
-.logo span { color: var(--laranja); }
-
 .nav-actions {
   display: flex;
   align-items: center;
@@ -62,6 +65,7 @@ header {
 
 .link-entrar:hover { color: var(--laranja); }
 
+/* Botões: .btn é a base; .btn-primary (laranja) e .btn-outline (só contorno) são as variantes. */
 .btn {
   padding: 10px 20px;
   border-radius: 6px;
@@ -86,6 +90,7 @@ header {
 
 .btn-outline:hover { background: rgba(27,67,50,0.06); }
 
+/* Botão do menu no telemóvel*/
 .menu-toggle {
   display: none;
   flex-direction: column;
@@ -101,7 +106,7 @@ header {
   background: var(--verde-escuro);
 }
 
-/* ---------- HERO (duas colunas) ---------- */
+/*  HERO (duas colunas)  */
 .hero {
   margin-top: 72px;
   display: flex;
@@ -143,12 +148,12 @@ header {
   aspect-ratio: 4 / 3;
   border-radius: 14px;
   background-color: #E4E1D8;
-  background-image: url(../imagens/98085038-nutrição-esportiva-suplementos-alimentos-saudáveis-e-halteres-em-um-fundo-preto-fitness.jpg);
+  background-image: url(../imagens/hero.jpg);
   background-size: cover;
   background-position: center;
 }
 
-/* ---------- COMO FUNCIONA ---------- */
+/*  COMO FUNCIONA  */
 .como-funciona {
   padding: 70px 40px;
   text-align: center;
@@ -187,7 +192,7 @@ header {
   color: #555;
 }
 
-/* ---------- FOOTER ---------- */
+/*  FOOTER  */
 footer {
   background: var(--verde-escuro);
   color: var(--branco);
@@ -196,7 +201,8 @@ footer {
   font-size: 0.85rem;
 }
 
-/* ---------- MODAL DE LOGIN ---------- */
+/*  MODAL DE LOGIN  */
+/* O fundo escuro (.overlay) está escondido; a classe .ativo, posta por JavaScript, mostra-o. */
 .overlay {
   display: none;
   position: fixed;
@@ -269,7 +275,8 @@ footer {
   font-weight: 600;
 }
 
-/* ---------- RESPONSIVO ---------- */
+/*  RESPONSIVIDADE  */
+/* Ecrãs médios: o texto e a imagem da página inicial ficam um por cima do outro. */
 @media (max-width: 860px) {
   .hero {
     flex-direction: column-reverse;
@@ -282,6 +289,7 @@ footer {
   .passos { grid-template-columns: 1fr; }
 }
 
+/* Telemóvel */
 @media (max-width: 768px) {
   header { padding: 14px 20px; }
 

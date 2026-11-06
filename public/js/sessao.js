@@ -1,20 +1,29 @@
-// Partilha o estado de autenticação e o login entre as páginas do site.
+// Script partilhado pelas páginas (index.html e registo.html).
+//  1) Pergunta ao servidor se há sessão iniciada (rota /api/auth/eu).
+//  2) Mostra a barra do topo certa: "Entrar / Criar conta" ou "Olá, nome / O meu perfil / Sair".
+//  3) Liga o formulário de login (o modal da página inicial) ao servidor.
+//  4) Abre o modal de login quando o endereço traz ?login=1 e ainda não há sessão.
+
+// A função está dentro de parênteses para que as variáveis não "vazem" para as outras páginas.
 (function () {
+  // Elementos da página que este script usa (podem não existir em todas as páginas).
   const barra = document.getElementById('nav-actions') || document.querySelector('.nav-actions');
   const overlay = document.getElementById('overlay-login') || document.querySelector('.overlay');
   const formLogin = document.getElementById('form-login') || (overlay && overlay.querySelector('form'));
 
-  // Reutiliza as funções da página inicial ou altera o modal diretamente nas outras páginas.
+  // Abre o modal de login. Usa a função do index.html, se existir.
   function abrirLogin() {
     if (typeof abrirModal === 'function') abrirModal();
     else if (overlay) overlay.classList.add('ativo');
   }
 
+  // Fecha o modal de login.
   function fecharLogin() {
     if (typeof fecharModal === 'function') fecharModal();
     else if (overlay) overlay.classList.remove('ativo');
   }
 
+  // Troca "Entrar / Criar conta" por "Olá, nome / O meu perfil / Sair".
   function mostrarSessaoIniciada(utilizador) {
     if (!barra) return;
 
@@ -33,24 +42,27 @@
     sair.textContent = 'Sair';
     sair.addEventListener('click', terminarSessao);
 
-    barra.textContent = '';
+    barra.textContent = ''; // limpa os botões antigos
     barra.append(ola, perfil, sair);
   }
 
+  // Botão "Sair": avisa o servidor e volta à página inicial.
   async function terminarSessao() {
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
     } catch (erro) {
-      // A navegação para o início prossegue mesmo se o servidor não responder.
+      // Mesmo sem resposta do servidor, volta à página inicial.
     }
     window.location.href = '/index.html';
   }
 
+  // Formulário de login (o do modal da página inicial).
   if (formLogin) {
     const campoEmail = formLogin.querySelector('input[type="email"]');
     const campoPassword = formLogin.querySelector('input[type="password"]');
     const botao = formLogin.querySelector('button[type="submit"]');
 
+    // Linha mostrar os erros do login
     let erro = formLogin.querySelector('.erro-login');
     if (!erro) {
       erro = document.createElement('p');
@@ -62,8 +74,9 @@
       else formLogin.append(erro);
     }
 
+    // Ao enviar o formulário: valida, envia o login ao servidor e mostra o resultado.
     formLogin.addEventListener('submit', async function (e) {
-      e.preventDefault();
+      e.preventDefault(); // impede a página de recarregar
       erro.hidden = true;
 
       if (!campoEmail.value.trim() || !campoPassword.value) {
@@ -72,7 +85,7 @@
         return;
       }
 
-      if (botao) botao.disabled = true;
+      if (botao) botao.disabled = true; // evita cliques repetidos enquanto espera
       try {
         const resposta = await fetch('/api/auth/login', {
           method: 'POST',
@@ -81,6 +94,7 @@
         });
         const dados = await resposta.json().catch(function () { return {}; });
 
+        // Login certo: fecha o modal e passa a mostrar a barra de quem tem sessão.
         if (resposta.ok) {
           campoPassword.value = '';
           fecharLogin();
@@ -98,8 +112,9 @@
     });
   }
 
+  // Ao abrir a página: pergunta ao servidor quem tem a sessão iniciada.
   async function iniciar() {
-    // Evita mostrar por instantes os controlos de utilizador não autenticado.
+    // Esconde a barra por instantes, para quem já tem sessão não ver "Entrar" a piscar.
     if (barra) barra.style.visibility = 'hidden';
 
     let logado = false;
@@ -111,10 +126,11 @@
         mostrarSessaoIniciada(dados.utilizador);
       }
     } catch (falha) {
-      // Sem resposta, mantém os controlos de autenticação já renderizados.
+      // Sem resposta do servidor, a página fica como está.
     }
     if (barra) barra.style.visibility = '';
 
+    // Vindo do registo ("Fazer login"), o endereço traz ?login=1 e o modal abre sozinho.
     const pedirLogin = new URLSearchParams(window.location.search).get('login') === '1';
     if (pedirLogin && !logado) abrirLogin();
   }

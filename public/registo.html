@@ -9,14 +9,6 @@
 
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/registo.css">
-
-    <style>
-        .erro-geral {
-            color: #b00020;
-            font-size: 0.9rem;
-            margin: 8px 0 0;
-        }
-    </style>
 </head>
 
 <body>
@@ -50,6 +42,8 @@
                 montar os teus planos.
             </p>
 
+            <!-- Formulário de registo. Tem novalidate porque a validação é feita em JavaScript (mais abaixo),
+                 para mostrar os avisos do site em vez dos do browser -->
             <form id="form-registo" novalidate>
 
                 <label for="nome">Nome</label>
@@ -71,6 +65,7 @@
                     required
                 >
 
+                <!-- Aviso: email inválido que aparece enquanto o utilizador escreve -->
                 <p
                     class="erro-email"
                     id="erro-email"
@@ -103,10 +98,12 @@
                     required
                 >
 
+                <!-- Aviso: as palavras-passe não coincidem -->
                 <p class="erro-password" id="erro-password">
                     As palavras-passe não coincidem.
                 </p>
 
+                <!-- Aviso geral: campos em falta ou erros que vêm do servidor -->
                 <p class="erro-geral" id="erro-geral" role="alert" hidden></p>
 
                 <button
@@ -155,8 +152,9 @@
         <p>&copy; 2026 NutriFit</p>
     </footer>
 
-    <!-- ===== JAVASCRIPT ===== -->
+    <!-- ===== JS ===== -->
     <script>
+        // Elementos da página que o script usa.
         const form = document.getElementById('form-registo');
 
         const nome = document.getElementById('nome');
@@ -173,11 +171,13 @@
         const botaoSubmit =
             form.querySelector('button[type="submit"]');
 
-        // Deve corresponder ao limite validado pelo servidor.
+        // Tamanho mínimo da palavra-passe igual ao do servidor, em routes/auth.js.
         const PASSWORD_MIN = 6;
 
+        // Formato de email aceite: algo@dominio.algo (o servidor volta a validar).
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+        // Valida o email enquanto o utilizador escreve.
         email.addEventListener('input', function () {
             const emailAtual = email.value.trim();
 
@@ -190,6 +190,7 @@
             atualizarAvisoEmail();
         });
 
+        // Mostra ou esconde o aviso do email e Devolve true se o email for válido.
         function atualizarAvisoEmail() {
             const emailValido =
                 emailRegex.test(email.value.trim());
@@ -207,17 +208,20 @@
             return emailValido;
         }
 
+        // Mostra o aviso geral por cima do botão.
         function mostrarErroGeral(texto) {
             erroGeral.textContent = texto;
             erroGeral.hidden = false;
         }
 
-        // O servidor repete estas validações; aqui servem para dar feedback imediato.
+        // Ao enviar o formulário: valida os campos e envia os dados ao servidor (/api/auth/registo).
+        // O servidor repete estas validações; aqui servem para avisar mais depressa.
         form.addEventListener('submit', async function (e) {
-            e.preventDefault();
+            e.preventDefault(); // impede a página de recarregar
 
             erroGeral.hidden = true;
 
+            // 1) Valida o email e verifica se as duas palavras-passe coincidem.
             let valido = true;
 
             if (!atualizarAvisoEmail()) {
@@ -235,6 +239,8 @@
                 return;
             }
 
+            // 2) O novalidate desliga as verificações do browser, por isso o nome e o tamanho
+            //    da palavra-passe são verificados aqui.
             if (nome.value.trim() === '') {
                 mostrarErroGeral('Escreve o teu nome.');
                 return;
@@ -248,7 +254,8 @@
                 return;
             }
 
-            botaoSubmit.disabled = true;
+            // 3) Envia os dados ao servidor.
+            botaoSubmit.disabled = true; // evita cliques repetidos enquanto espera
 
             try {
                 const resposta = await fetch('/api/auth/registo', {
@@ -261,7 +268,7 @@
                     })
                 });
 
-                // Permite apresentar a mensagem genérica abaixo se a resposta não for JSON.
+                // Se a resposta não for JSON, usa um objeto vazio e mostra a mensagem.
                 const dados = await resposta.json().catch(function () {
                     return {};
                 });
@@ -284,6 +291,7 @@
             }
         });
 
+        // Esconde o formulário e mostra no ecrã "Conta registada com sucesso".
         function mostrarEcraSucesso() {
             document.getElementById('registo-titulo')
                 .classList.add('escondido');
@@ -301,7 +309,8 @@
         }
     </script>
 
-       <script src="js/sessao.js"></script>
+    <!-- Barra do topo com a sessão iniciada -->
+    <script src="js/sessao.js"></script>
 
 </body>
 </html>

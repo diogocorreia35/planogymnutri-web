@@ -1,13 +1,22 @@
+// Base de dados do NutriFit (SQLite, guardada no ficheiro database.sqlite).
+// Ao ser carregado, este ficheiro abre a base de dados, cria as tabelas (se ainda não existirem)
+// e insere os exercícios e alimentos iniciais. O resto do projeto usa-o assim:
+//   const db = require('./db');
+// Para ver quantos registos há em cada tabela, corre no terminal: node db.js
+
 const Database = require('better-sqlite3');
 const path = require('path');
 
+// Abre o ficheiro database.sqlite (se não existir, é criado agora).
 const db = new Database(path.join(__dirname, 'database.sqlite'));
 
-// Ativa as chaves estrangeiras e as regras ON DELETE CASCADE definidas no esquema.
+// Liga as chaves estrangeiras. Sem isto o SQLite ignora-as, e apagar um plano
+// (ou um utilizador) não apagava os dados que dependem dele.
 db.pragma('foreign_keys = ON');
 
-// ---------- Tabelas (só são criadas se ainda não existirem) ----------
+// Tabelas 
 db.exec(`
+  -- Contas dos utilizadores. A palavra-passe é guardada só como hash.
   CREATE TABLE IF NOT EXISTS utilizadores (
     id            INTEGER PRIMARY KEY AUTOINCREMENT,
     nome          TEXT NOT NULL,
@@ -20,6 +29,7 @@ db.exec(`
     criado_em     TEXT NOT NULL DEFAULT (datetime('now'))
   );
 
+  -- Exercícios disponíveis para montar planos de treino.
   CREATE TABLE IF NOT EXISTS exercicios (
     id             INTEGER PRIMARY KEY AUTOINCREMENT,
     nome           TEXT NOT NULL UNIQUE,
@@ -27,6 +37,7 @@ db.exec(`
     dificuldade    TEXT NOT NULL CHECK (dificuldade IN ('iniciante', 'intermédio', 'avançado'))
   );
 
+  -- Planos de treino de cada utilizador (apagar o utilizador apaga os planos).
   CREATE TABLE IF NOT EXISTS planos_treino (
     id            INTEGER PRIMARY KEY AUTOINCREMENT,
     utilizador_id INTEGER NOT NULL REFERENCES utilizadores(id) ON DELETE CASCADE,
@@ -34,6 +45,7 @@ db.exec(`
     criado_em     TEXT NOT NULL DEFAULT (datetime('now'))
   );
 
+  -- Exercícios de cada plano de treino, com o dia da semana (1 = segunda ... 7 = domingo).
   CREATE TABLE IF NOT EXISTS plano_treino_exercicios (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
     plano_id     INTEGER NOT NULL REFERENCES planos_treino(id) ON DELETE CASCADE,
@@ -43,6 +55,7 @@ db.exec(`
     repeticoes   INTEGER NOT NULL CHECK (repeticoes BETWEEN 1 AND 100)
   );
 
+  -- Alimentos disponíveis para montar planos alimentares (valores por 100 g).
   CREATE TABLE IF NOT EXISTS alimentos (
     id            INTEGER PRIMARY KEY AUTOINCREMENT,
     nome          TEXT NOT NULL UNIQUE,
@@ -52,7 +65,8 @@ db.exec(`
     hidratos_100g REAL NOT NULL,
     gordura_100g  REAL NOT NULL
   );
-  
+
+  -- Planos alimentares de cada utilizador (apagar o utilizador apaga os planos).
   CREATE TABLE IF NOT EXISTS planos_alimentares (
     id            INTEGER PRIMARY KEY AUTOINCREMENT,
     utilizador_id INTEGER NOT NULL REFERENCES utilizadores(id) ON DELETE CASCADE,
@@ -60,6 +74,7 @@ db.exec(`
     criado_em     TEXT NOT NULL DEFAULT (datetime('now'))
   );
 
+  -- Alimentos de cada plano alimentar, por refeição e com a quantidade em gramas.
   CREATE TABLE IF NOT EXISTS plano_refeicoes (
     id            INTEGER PRIMARY KEY AUTOINCREMENT,
     plano_id      INTEGER NOT NULL REFERENCES planos_alimentares(id) ON DELETE CASCADE,
@@ -69,7 +84,7 @@ db.exec(`
   );
 `);
 
-// ---------- Dados iniciais: [nome, grupo muscular, dificuldade] ----------
+//  Exercícios [nome, grupo muscular, dificuldade] 
 const exercicios = [
   ['Flexões', 'peito', 'iniciante'],
   ['Flexões inclinadas', 'peito', 'iniciante'],
@@ -114,7 +129,7 @@ const exercicios = [
   ['Burpees', 'cardio', 'avançado']
 ];
 
-// ---------- [nome, categoria, kcal, proteína, hidratos, gordura] por 100 g (valores aproximados) ----------
+//  Alimentos [nome, categoria, kcal, proteínas, hidratos, gorduras] por 100 g  
 const alimentos = [
   ['Peito de frango grelhado', 'Proteínas', 165, 31, 0, 3.6],
   ['Peito de peru', 'Proteínas', 135, 30, 0, 1],
@@ -163,7 +178,7 @@ const alimentos = [
   ['Abacate', 'Gorduras', 160, 2, 8.5, 14.7]
 ];
 
-// INSERT OR IGNORE torna a carga inicial segura para executar mais do que uma vez.
+// INSERT OR IGNORE salta o que já existe, pode correr sempre que o servidor arranca.
 const inserirExercicio = db.prepare(
   'INSERT OR IGNORE INTO exercicios (nome, grupo_muscular, dificuldade) VALUES (?, ?, ?)'
 );
@@ -171,15 +186,16 @@ const inserirAlimento = db.prepare(
   'INSERT OR IGNORE INTO alimentos (nome, categoria, calorias_100g, proteina_100g, hidratos_100g, gordura_100g) VALUES (?, ?, ?, ?, ?, ?)'
 );
 
-// Evita deixar apenas parte dos dados iniciais inserida se ocorrer um erro.
+// Transação: ou entra tudo, ou não entra nada.
 db.transaction(() => {
   exercicios.forEach((e) => inserirExercicio.run(...e));
   alimentos.forEach((a) => inserirAlimento.run(...a));
 })();
 
+// Partilha a base de dados com o resto do projeto.
 module.exports = db;
 
-// Ao executar este ficheiro diretamente, apresenta a contagem das tabelas.
+// Só corre quando se executa "node db.js" no terminal: mostra quantos registos há em cada tabela.
 if (require.main === module) {
   const tabelas = [
     'utilizadores', 'exercicios', 'planos_treino', 'plano_treino_exercicios',
